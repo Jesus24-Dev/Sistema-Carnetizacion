@@ -1,8 +1,11 @@
 
 package com.jesus24dev.carnetizacion.models;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
 
@@ -16,18 +19,24 @@ public class Employee {
     private Gender gender;
     private String email;
     private LocalDate birthday;
+    
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "imageId", referencedColumnName = "id")
+    private Images image;
+    
 
     public Employee() {
     }
 
-    public Employee(String ci, String name, String lastname, Gender gender, String email, LocalDate birthday) {
+    public Employee(String ci, String name, String lastname, Gender gender, String email, LocalDate birthday, Images image) {
         this.ci = ci;
         this.name = name;
         this.lastname = lastname;
         this.gender = gender;
         this.email = email;
         this.birthday = birthday;
-    }
+        this.image = image;
+    } 
 
     public String getCi() {
         return ci;
@@ -76,6 +85,16 @@ public class Employee {
     public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
     }
+
+    public Images getImage() {
+        return image;
+    }
+
+    public void setImage(Images image) {
+        this.image = image;
+    }
+    
+    
      
     private enum Gender {
         M(1, "MALE"),
