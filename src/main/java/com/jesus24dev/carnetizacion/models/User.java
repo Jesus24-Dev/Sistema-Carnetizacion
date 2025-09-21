@@ -65,11 +65,8 @@ public class User {
     }
 
     public void setActive(boolean active) {
-        this.cctive = active;
+        this.active = active;
     }
-    
-    
-    
     
     private enum Role {
         ROLE_ADMIN,
