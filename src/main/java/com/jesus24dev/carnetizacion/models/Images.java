@@ -18,7 +18,7 @@ public class Images {
     private Long id;
     private String pathFile;
     
-    @OneToOne(mappedBy = "images")
+    @OneToOne(mappedBy = "image")
     private Employee employee;
     
     @CreatedDate
