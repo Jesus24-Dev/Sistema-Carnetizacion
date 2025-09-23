@@ -96,7 +96,7 @@ public class Employee {
     
     
      
-    private enum Gender {
+    public enum Gender {
         M(1, "MALE"),
         F(2, "FEMALE");
         
