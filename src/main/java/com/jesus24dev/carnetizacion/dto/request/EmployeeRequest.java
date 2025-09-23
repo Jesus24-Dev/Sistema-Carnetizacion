@@ -11,7 +11,6 @@ public class EmployeeRequest {
     private Employee.Gender gender;
     private String email;
     private LocalDate birthday;
-    private Long imageId;
   
     public EmployeeRequest(Employee employee) {
         this.ci = employee.getCi();
@@ -20,7 +19,6 @@ public class EmployeeRequest {
         this.gender = employee.getGender();
         this.email = employee.getEmail();
         this.birthday = employee.getBirthday();
-        this.imageId = (employee.getImage() != null) ? employee.getImage().getId() : null;
     }
 
     public String getCi() {
@@ -69,14 +67,6 @@ public class EmployeeRequest {
 
     public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
-    }
-
-    public Long getImageId() {
-        return imageId;
-    }
-
-    public void setImageId(Long imageId) {
-        this.imageId = imageId;
     }
        
 }
