@@ -2,24 +2,28 @@
 package com.jesus24dev.carnetizacion.dto.request;
 
 import com.jesus24dev.carnetizacion.models.Employee;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 public class EmployeeRequest {
+    @NotBlank(message = "La cedula del empleado no puede estar vacia.")
     private String ci;
+    
+    @NotBlank(message = "El nombre no puede estar vacio.")
     private String name;
+    
+    @NotBlank(message = "El apellido no puede estar vacio.")
     private String lastname;
     private Employee.Gender gender;
+    
+    @NotBlank(message = "El email no puede estar vacio.")
+    @Email(message = "Ingrese un formato correcto para el correo electronico.")
     private String email;
+    
+    @NotNull(message = "La fecha de nacimiento es obligatoria.")
     private LocalDate birthday;
-  
-    public EmployeeRequest(Employee employee) {
-        this.ci = employee.getCi();
-        this.name = employee.getName();
-        this.lastname = employee.getLastname();
-        this.gender = employee.getGender();
-        this.email = employee.getEmail();
-        this.birthday = employee.getBirthday();
-    }
 
     public String getCi() {
         return ci;
