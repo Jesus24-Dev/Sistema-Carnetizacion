@@ -1,5 +1,6 @@
 package com.jesus24dev.carnetizacion.services;
 
+import com.jesus24dev.carnetizacion.exception.EntityNotFoundException;
 import com.jesus24dev.carnetizacion.models.Employee;
 import com.jesus24dev.carnetizacion.repository.EmployeeRepository;
 import java.util.List;
@@ -9,7 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class EmployeeService {
     
-    private EmployeeRepository employeeRepository;
+    private final EmployeeRepository employeeRepository;
     
     @Autowired
     public EmployeeService(EmployeeRepository employeeRepository){
@@ -22,7 +23,7 @@ public class EmployeeService {
     
     public Employee findEmployeeByCi(String ci){
         Employee employeeFounded = employeeRepository.findById(ci)
-                .orElseThrow(() -> new IllegalArgumentException("Employee not founded"));
+                .orElseThrow(() -> new EntityNotFoundException("Empleado", ci));
         
         return employeeFounded;
     }
@@ -32,8 +33,7 @@ public class EmployeeService {
     }
     
     public Employee updateEmployee(Employee employee, String ci){
-        Employee employeeFounded = employeeRepository.findById(ci)
-                .orElseThrow(() -> new IllegalArgumentException("Employee not founded"));
+        Employee employeeFounded = this.findEmployeeByCi(ci);
         
         employeeFounded.setName(employee.getName());
         employeeFounded.setLastname(employee.getLastname());
@@ -43,8 +43,7 @@ public class EmployeeService {
     }
     
     public void deleteEmployee(String ci){
-        Employee employeeFounded = employeeRepository.findById(ci)
-                .orElseThrow(() -> new IllegalArgumentException("Employee not founded"));
+        Employee employeeFounded = this.findEmployeeByCi(ci);
         employeeRepository.delete(employeeFounded);
     }
 }
