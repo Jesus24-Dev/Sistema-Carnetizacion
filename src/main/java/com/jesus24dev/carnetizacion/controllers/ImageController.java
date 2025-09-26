@@ -68,10 +68,12 @@ public class ImageController {
         }
     }
     
-    @GetMapping("/{fileName}")
-    public ResponseEntity<byte[]> getImage(@PathVariable String fileName) {
+    @GetMapping("/{ci}")
+    public ResponseEntity<byte[]> getImage(@PathVariable String ci) {
         try {
-            Path filePath = Paths.get(UPLOAD_DIR + fileName);
+            String imagePath = imagesService.getImagePath(ci);
+            
+            Path filePath = Paths.get(imagePath);
             
             if (!Files.exists(filePath)) {
                 return ResponseEntity.notFound().build();
