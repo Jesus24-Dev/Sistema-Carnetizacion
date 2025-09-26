@@ -34,7 +34,6 @@ public class EmployeeService {
     
     public Employee updateEmployee(Employee employee, String ci){
         Employee employeeFounded = this.findEmployeeByCi(ci);
-        
         employeeFounded.setName(employee.getName());
         employeeFounded.setLastname(employee.getLastname());
         employeeFounded.setEmail(employee.getEmail());
