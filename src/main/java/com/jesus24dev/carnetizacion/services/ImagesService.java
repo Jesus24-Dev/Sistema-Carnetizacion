@@ -5,6 +5,7 @@ import com.jesus24dev.carnetizacion.models.Employee;
 import com.jesus24dev.carnetizacion.models.Images;
 import com.jesus24dev.carnetizacion.repository.ImagesRepository;
 import java.nio.file.Path;
+import java.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +27,7 @@ public class ImagesService {
         
         image.setPathFile(path.toString());
         image.setEmployee(employeeFounded);
+        image.setUploadedAt(LocalDate.now());
         
         employeeFounded.setImage(image);
         
