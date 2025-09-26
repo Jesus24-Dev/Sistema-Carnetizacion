@@ -34,4 +34,12 @@ public class ImagesService {
         
         return image;
     }
+    
+    public String getImagePath(String ci){
+        Employee employeeFounded = employeeService.findEmployeeByCi(ci);
+        
+        String pathFile = employeeFounded.getImage().getPathFile();
+        
+        return pathFile;
+    }
 }
