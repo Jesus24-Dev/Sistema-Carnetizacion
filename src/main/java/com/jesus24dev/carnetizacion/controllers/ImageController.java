@@ -1,5 +1,6 @@
 package com.jesus24dev.carnetizacion.controllers;
 
+import com.jesus24dev.carnetizacion.dto.response.ImagesResponse;
 import com.jesus24dev.carnetizacion.models.Employee;
 import com.jesus24dev.carnetizacion.models.Images;
 import com.jesus24dev.carnetizacion.services.EmployeeService;
@@ -60,7 +61,7 @@ public class ImageController {
             
             Images image = imagesService.createImage(filePath, ci);
 
-            return ResponseEntity.status(HttpStatus.CREATED).body(image);
+            return ResponseEntity.status(HttpStatus.CREATED).body(new ImagesResponse(image));
             
         } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
