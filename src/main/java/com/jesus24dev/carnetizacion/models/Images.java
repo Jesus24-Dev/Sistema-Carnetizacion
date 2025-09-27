@@ -21,6 +21,8 @@ public class Images {
     @OneToOne(mappedBy = "image")
     private Employee employee;
     
+    private boolean validated;
+    
     @CreatedDate
     private LocalDate uploadedAt;
     
@@ -28,11 +30,12 @@ public class Images {
     public Images() {
     }
 
-    public Images(Long id, String pathFile, Employee employee, LocalDate uploadedAt) {
+    public Images(Long id, String pathFile, Employee employee, LocalDate uploadedAt, boolean validated) {
         this.id = id;
         this.pathFile = pathFile;
         this.employee = employee;
         this.uploadedAt = uploadedAt;
+        this.validated = validated;
     }
 
     public Long getId() {
@@ -66,5 +69,15 @@ public class Images {
     public void setEmployee(Employee employee) {
         this.employee = employee;
     }
+
+    public boolean isValidated() {
+        return validated;
+    }
+
+    public void setValidated(boolean validated) {
+        this.validated = validated;
+    }
+    
+    
    
 }
