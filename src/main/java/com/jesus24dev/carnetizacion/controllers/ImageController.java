@@ -12,6 +12,7 @@ import java.nio.file.Paths;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -56,6 +57,10 @@ public class ImageController {
             
             String fileName = ci + fileExtension;
             Path filePath = Paths.get(UPLOAD_DIR + fileName);
+            
+            if (Files.exists(filePath)) {
+                Files.delete(filePath);
+            }
 
             Files.copy(file.getInputStream(), filePath);
             
@@ -97,5 +102,25 @@ public class ImageController {
         }
     }
     
-    
+    @DeleteMapping("/{ci}")
+    public ResponseEntity<?> deleteImage(@PathVariable String ci) {
+        try {
+            String imagePath = imagesService.getImagePath(ci);
+            
+            if (imagePath != null) {
+                Path filePath = Paths.get(imagePath);
+                if (Files.exists(filePath)) {
+                    Files.delete(filePath);
+                }
+            }
+            
+            imagesService.deleteImageByCi(ci);
+            
+            return ResponseEntity.ok().body("Imagen eliminada correctamente");
+            
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error al eliminar la imagen: " + e.getMessage());
+        }
+    }   
 }
