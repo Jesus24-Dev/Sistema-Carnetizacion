@@ -6,5 +6,5 @@ import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ImagesRepository extends JpaRepository<Images, UUID> {
-    
+    void deleteByEmployeeCi(String ci);
 }
