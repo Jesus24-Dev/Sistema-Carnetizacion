@@ -4,12 +4,16 @@ package com.jesus24dev.carnetizacion.services;
 import com.jesus24dev.carnetizacion.models.Employee;
 import com.jesus24dev.carnetizacion.models.Images;
 import com.jesus24dev.carnetizacion.repository.ImagesRepository;
+import jakarta.transaction.Transactional;
 import java.nio.file.Path;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@Transactional
 public class ImagesService {
     
     private ImagesRepository imagesRepository;
@@ -21,31 +25,38 @@ public class ImagesService {
         this.employeeService = employeeService;
     }
     
-    public Images createImage(Path path, String ci){
-        Images image = new Images();
-        Employee employeeFounded = employeeService.findEmployeeByCi(ci);
+    public Images createImage(String filePath, String ci, boolean validated){
+        Optional<Images> existingImage = imagesRepository.findByEmployeeCi(ci);
+        Employee employee = employeeService.findEmployeeByCi(ci);
+
+        Images image;
+        if (existingImage.isPresent()) {
+            image = existingImage.get();
+            image.setPathFile(filePath);
+            image.setUploadedAt(LocalDate.now());
+            image.setValidated(validated); // Nuevo campo
+        } else {
+            image = new Images();
+            image.setPathFile(filePath);
+            image.setEmployee(employee);
+            image.setUploadedAt(LocalDate.now());
+            image.setValidated(validated); // Nuevo campo
+        }
         
-        image.setPathFile(path.toString());
-        image.setEmployee(employeeFounded);
-        image.setUploadedAt(LocalDate.now());
-        
-        employeeFounded.setImage(image);
-        
-        employeeService.updateImage(image, employeeFounded);
-        imagesRepository.save(image);
-        
-        return image;
+        return imagesRepository.save(image);
     }
     
     public String getImagePath(String ci){
-        Employee employeeFounded = employeeService.findEmployeeByCi(ci);
-        
-        String pathFile = employeeFounded.getImage().getPathFile();
-        
+        Employee employeeFounded = employeeService.findEmployeeByCi(ci);  
+        String pathFile = employeeFounded.getImage().getPathFile();       
         return pathFile;
     }
     
      public void deleteImageByCi(String ci) {
         imagesRepository.deleteByEmployeeCi(ci);
+    }
+     
+     public boolean existsByCi(String ci) {
+        return employeeService.existsByEmployeeCi(ci);
     }
 }
