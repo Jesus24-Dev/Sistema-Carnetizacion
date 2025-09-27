@@ -4,12 +4,15 @@ import com.jesus24dev.carnetizacion.dto.response.ImagesResponse;
 import com.jesus24dev.carnetizacion.models.Employee;
 import com.jesus24dev.carnetizacion.models.Images;
 import com.jesus24dev.carnetizacion.services.EmployeeService;
+import com.jesus24dev.carnetizacion.services.ImageValidationService;
 import com.jesus24dev.carnetizacion.services.ImagesService;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,12 +28,18 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/api/images")
 public class ImageController {
     private final String UPLOAD_DIR = "./images/";
-    private ImagesService imagesService;
+    private final ImagesService imagesService;
+    private final ImageValidationService imageValidationService;
+    private final EmployeeService employeeService;
     
     @Autowired
-    public ImageController(EmployeeService employeeService, ImagesService imagesService) {
+    public ImageController(EmployeeService employeeService, ImagesService imagesService, ImageValidationService imageValidationService) {
+        
+        this.employeeService = employeeService;
+        this.imagesService = imagesService;
+        this.imageValidationService = imageValidationService;
+        
         try {
-            this.imagesService = imagesService;
             Files.createDirectories(Paths.get(UPLOAD_DIR));
         } catch (IOException e) {
             throw new RuntimeException("No se pudo crear el directorio de imagenes", e);
@@ -48,6 +57,19 @@ public class ImageController {
             if (contentType == null || !contentType.startsWith("image/")) {
                 return ResponseEntity.badRequest().body("Solo se permiten archivos de imagen");
             }
+            
+            if (!imagesService.existsByCi(ci)) {
+                return ResponseEntity.badRequest()
+                    .body("No existe un empleado con CI: " + ci);
+            }
+            
+            ImageValidationService.ValidationResult validationResult = 
+            imageValidationService.validateImage(file);
+            
+            if (!validationResult.isValid()) {
+                return ResponseEntity.badRequest()
+                    .body("La imagen no cumple los requisitos: " + validationResult.getMessage());
+            }
 
             String originalFileName = file.getOriginalFilename();
             String fileExtension = "";
@@ -62,9 +84,9 @@ public class ImageController {
                 Files.delete(filePath);
             }
 
-            Files.copy(file.getInputStream(), filePath);
+            Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
             
-            Images image = imagesService.createImage(filePath, ci);
+            Images image = imagesService.createImage(filePath.toString(), ci, true);
 
             return ResponseEntity.status(HttpStatus.CREATED).body(new ImagesResponse(image));
             
@@ -96,6 +118,7 @@ public class ImageController {
             return ResponseEntity.ok()
                     .contentType(org.springframework.http.MediaType.parseMediaType(contentType))
                     .body(imageBytes);
+                    
             
         } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
