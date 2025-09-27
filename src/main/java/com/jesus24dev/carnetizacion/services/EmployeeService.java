@@ -52,4 +52,9 @@ public class EmployeeService {
         employee.setImage(image);
         employeeRepository.save(employee);
     }
+
+    public boolean existsByEmployeeCi(String ci) {
+        return employeeRepository.existsByCi(ci);
+    }
+    
 }
