@@ -44,4 +44,8 @@ public class ImagesService {
         
         return pathFile;
     }
+    
+     public void deleteImageByCi(String ci) {
+        imagesRepository.deleteByEmployeeCi(ci);
+    }
 }
