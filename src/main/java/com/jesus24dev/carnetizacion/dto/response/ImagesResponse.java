@@ -9,12 +9,14 @@ public class ImagesResponse {
     private String pathFile;
     private String employeeId;
     private LocalDate uploadedAt;
+    private boolean validated;
     
     public ImagesResponse(Images image){
         this.id = image.getId();
         this.pathFile = image.getPathFile();
         this.employeeId = image.getEmployee().getCi();
         this.uploadedAt = image.getUploadedAt();
+        this.validated = image.isValidated();
     }
 
     public Long getId() {
@@ -48,6 +50,13 @@ public class ImagesResponse {
     public void setUploadedAt(LocalDate uploadedAt) {
         this.uploadedAt = uploadedAt;
     }
-    
+
+    public boolean isValidated() {
+        return validated;
+    }
+
+    public void setValidated(boolean validated) {
+        this.validated = validated;
+    }
     
 }
