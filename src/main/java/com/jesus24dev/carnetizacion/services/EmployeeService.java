@@ -12,11 +12,13 @@ import org.springframework.stereotype.Service;
 public class EmployeeService {
     
     private final EmployeeRepository employeeRepository;
+    private final NotificationService notificationService;
     
     
     @Autowired
-    public EmployeeService(EmployeeRepository employeeRepository){
+    public EmployeeService(EmployeeRepository employeeRepository, NotificationService notificationService){
         this.employeeRepository = employeeRepository;
+        this.notificationService = notificationService;
     }
     
     public List<Employee> findAllEmployees(){
@@ -31,6 +33,8 @@ public class EmployeeService {
     }
     
     public Employee createEmployee(Employee employee){
+        notificationService.notifyNewEmployee(employee);
+        
         return employeeRepository.save(employee);
     }
     
