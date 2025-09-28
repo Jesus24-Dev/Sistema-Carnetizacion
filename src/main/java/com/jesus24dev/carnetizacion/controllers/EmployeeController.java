@@ -6,6 +6,7 @@ import com.jesus24dev.carnetizacion.dto.request.EmployeeUpdateRequest;
 import com.jesus24dev.carnetizacion.dto.response.EmployeeResponse;
 import com.jesus24dev.carnetizacion.models.Employee;
 import com.jesus24dev.carnetizacion.services.EmployeeService;
+import com.jesus24dev.carnetizacion.services.NotificationService;
 import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +24,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/employee")
 public class EmployeeController {
-    private EmployeeService employeeService;
+    private final EmployeeService employeeService;
+    
     
     @Autowired
     public EmployeeController(EmployeeService employeeService){
         this.employeeService = employeeService;
+
     }
     
     @GetMapping()
