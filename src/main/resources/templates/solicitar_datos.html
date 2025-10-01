@@ -1,46 +1,177 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
     <head>
-        <title>Carnetizacion - Subir datos</title>
+        <title>Carnetización - Datos Personales</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="/css/bootstrap.min.css" rel="stylesheet">
-        <script src="/js/bootstrap.bundle.min.js"></script>       
     </head>
-    <body>
-        <div>
-            <h2>Datos personales</h2>
-            <form th:action="@{/carnet/create/requestData}" th:method="POST">
-                <div>
-                    <label for="ci">Cedula</label>
-                    <input type="text" th:value="${ci}" disabled>
-                    <input type="hidden" name="ci" th:value="${ci}">
+    <body class="bg-light">
+        <div class="container py-5">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-8 col-lg-6">
+                    <div class="card shadow-lg border-0 rounded-3">
+                        <!-- Header -->
+                        <div class="card-header bg-primary text-white text-center py-4">
+                            <h2 class="h3 fw-bold mb-2">Datos Personales</h2>
+                            <p class="mb-0 opacity-75">Complete la información requerida para su carnet</p>
+                        </div>
+                        
+                        <!-- Form -->
+                        <div class="card-body p-4 p-md-5">
+                            <form th:action="@{/carnet/create/requestData}" th:method="POST" class="needs-validation" novalidate>
+                                
+                                <!-- Cédula (solo lectura) -->
+                                <div class="mb-4">
+                                    <label for="ci" class="form-label fw-semibold">Cédula</label>
+                                    <div class="input-group">
+                                        <input type="text" 
+                                               class="form-control form-control-lg" 
+                                               th:value="${ci}" 
+                                               disabled
+                                               style="background-color: #f8f9fa;">
+                                        <span class="input-group-text bg-success text-white">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle" viewBox="0 0 16 16">
+                                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                                <path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z"/>
+                                            </svg>
+                                        </span>
+                                    </div>
+                                    <small class="form-text text-muted">Cédula verificada correctamente</small>
+                                    <input type="hidden" name="ci" th:value="${ci}">
+                                </div>
+
+                                <div class="row g-3">
+                                    <!-- Nombres -->
+                                    <div class="col-md-6">
+                                        <label for="name" class="form-label fw-semibold">Nombres <span class="text-danger">*</span></label>
+                                        <input type="text" 
+                                               class="form-control" 
+                                               name="name" 
+                                               id="name" 
+                                               required
+                                               placeholder="Ingrese sus nombres"
+                                               maxlength="100">
+                                        <div class="invalid-feedback">
+                                            Por favor ingrese sus nombres.
+                                        </div>
+                                    </div>
+
+                                    <!-- Apellidos -->
+                                    <div class="col-md-6">
+                                        <label for="lastname" class="form-label fw-semibold">Apellidos <span class="text-danger">*</span></label>
+                                        <input type="text" 
+                                               class="form-control" 
+                                               name="lastname" 
+                                               id="lastname" 
+                                               required
+                                               placeholder="Ingrese sus apellidos"
+                                               maxlength="100">
+                                        <div class="invalid-feedback">
+                                            Por favor ingrese sus apellidos.
+                                        </div>
+                                    </div>
+
+                                    <!-- Sexo -->
+                                    <div class="col-md-6">
+                                        <label for="gender" class="form-label fw-semibold">Sexo <span class="text-danger">*</span></label>
+                                        <select class="form-select" name="gender" id="gender" required>
+                                            <option value="" disabled selected>Seleccione su sexo</option>
+                                            <option value="M">MASCULINO</option>
+                                            <option value="F">FEMENINO</option>
+                                        </select>
+                                        <div class="invalid-feedback">
+                                            Por favor seleccione su sexo.
+                                        </div>
+                                    </div>
+
+                                    <!-- Fecha de Nacimiento -->
+                                    <div class="col-md-6">
+                                        <label for="birthday" class="form-label fw-semibold">Fecha de Nacimiento <span class="text-danger">*</span></label>
+                                        <input type="date" 
+                                               class="form-control" 
+                                               name="birthday" 
+                                               id="birthday" 
+                                               required
+                                               max="2006-12-31">
+                                        <div class="invalid-feedback">
+                                            Por favor ingrese su fecha de nacimiento.
+                                        </div>
+                                    </div>
+
+                                    <!-- Correo -->
+                                    <div class="col-12">
+                                        <label for="email" class="form-label fw-semibold">Correo Electrónico <span class="text-danger">*</span></label>
+                                        <input type="email" 
+                                               class="form-control" 
+                                               name="email" 
+                                               id="email" 
+                                               required
+                                               placeholder="ejemplo@correo.com"
+                                               pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
+                                        <div class="invalid-feedback">
+                                            Por favor ingrese un correo electrónico válido.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Botones -->
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4 pt-3">
+                                    <a th:href="@{/carnet/create/requestCI}" class="btn btn-outline-secondary btn-lg me-md-2">
+                                        <i class="fas fa-arrow-left me-2"></i>Regresar
+                                    </a>
+                                    <button type="submit" class="btn btn-primary btn-lg px-4">
+                                        <i class="fas fa-paper-plane me-2"></i>Enviar Solicitud
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        
+                        <!-- Footer -->
+                        <div class="card-footer bg-light py-3 text-center">
+                            <small class="text-muted">
+                                Todos los campos marcados con <span class="text-danger">*</span> son obligatorios
+                            </small>
+                        </div>
+                    </div>
                 </div>
-                <div>
-                    <label for=name>Nombres</label>
-                    <input type="text" name="name" id="name">
-                </div>
-                <div>
-                    <label for="lastname">Apellidos</label>
-                    <input type="text" name="lastname" id="lastname">
-                </div>
-                <div>
-                    <label for="gender">Sexo</label>
-                    <select name="gender" id="gender">
-                        <option value="M">MASCULINO</option>
-                        <option value="F">FEMENINO</option>
-                    </select>
-                </div>
-                <div>
-                    <label for="email">Correo</label>
-                    <input type="email" name="email" id="email">
-                </div>
-                <div>
-                    <label for="birthday">Fecha de nacimiento</label>
-                    <input type="date" name="birthday" id="birthday">
-                </div>
-                <button type="submit">Enviar</button>
-            </form>
+            </div>
         </div>
+
+        <script src="/js/bootstrap.bundle.min.js"></script>
+        <script>
+            // Validación del formulario
+            (function() {
+                'use strict';
+                window.addEventListener('load', function() {
+                    var forms = document.getElementsByClassName('needs-validation');
+                    var validation = Array.prototype.filter.call(forms, function(form) {
+                        form.addEventListener('submit', function(event) {
+                            if (form.checkValidity() === false) {
+                                event.preventDefault();
+                                event.stopPropagation();
+                            }
+                            form.classList.add('was-validated');
+                        }, false);
+                    });
+                }, false);
+            })();
+
+            // Establecer fecha máxima (18 años atrás)
+            document.addEventListener('DOMContentLoaded', function() {
+                var today = new Date();
+                var maxDate = new Date(today.getFullYear() - 16, today.getMonth(), today.getDate());
+                document.getElementById('birthday').max = maxDate.toISOString().split('T')[0];
+            });
+
+            // Validar nombres y apellidos (solo letras y espacios)
+            document.getElementById('name').addEventListener('input', function(e) {
+                this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '');
+            });
+
+            document.getElementById('lastname').addEventListener('input', function(e) {
+                this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '');
+            });
+        </script>
     </body>
 </html>

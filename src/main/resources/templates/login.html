@@ -1,30 +1,165 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
     <head>
-        <title>Carnetizacion - Auth</title>
+        <title>Carnetización - Administrador</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="/css/bootstrap.min.css" rel="stylesheet">
-        <script src="/js/bootstrap.bundle.min.js"></script>
     </head>
-    <body>
-        <div>
-            <h1>Carnetizacion</h1>
-            <div>
-                <h2>Inicio de sesion</h2>
-                <form th:action="@{/login}" th:method="POST">
-                    <div>
-                        <label for="username">Nombre de usuario</label>
-                        <input type="text" id="username" name="username">
+    <body class="bg-dark">
+        <div class="container-fluid vh-100 d-flex align-items-center justify-content-center">
+            <div class="row w-100 justify-content-center">
+                <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-4">
+                    <div class="card shadow-lg border-0 rounded-4">
+                        <!-- Header -->
+                        <div class="card-header bg-gradient-primary text-white text-center py-4 rounded-top-4">
+                            <div class="mb-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-shield-lock-fill" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M8 0c-.69 0-1.843.265-2.928.56-1.11.3-2.229.655-2.887.87a1.54 1.54 0 0 0-1.044 1.262c-.596 4.477.787 7.795 2.465 9.99a11.777 11.777 0 0 0 2.517 2.453c.386.273.744.482 1.048.625.28.132.581.24.829.24s.548-.108.829-.24a7.159 7.159 0 0 0 1.048-.625 11.775 11.775 0 0 0 2.517-2.453c1.678-2.195 3.061-5.513 2.465-9.99a1.541 1.541 0 0 0-1.044-1.263 62.467 62.467 0 0 0-2.887-.87C9.843.266 8.69 0 8 0zm0 5a1.5 1.5 0 0 1 .5 2.915l.385 1.99a.5.5 0 0 1-.491.595h-.788a.5.5 0 0 1-.49-.595l.384-1.99A1.5 1.5 0 0 1 8 5z"/>
+                                </svg>
+                            </div>
+                            <h1 class="h3 fw-bold mb-2">Sistema de Carnetización</h1>
+                            <p class="mb-0 opacity-75">Panel de Administración</p>
+                        </div>
+                        
+                        <!-- Alert de error -->
+                        <div th:if="${param.error}" class="alert alert-danger alert-dismissible fade show m-3 mb-0 rounded-3" role="alert">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            <strong>Error de autenticación:</strong> Usuario o contraseña incorrectos.
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+
+                        <div th:if="${param.logout}" class="alert alert-success alert-dismissible fade show m-3 mb-0 rounded-3" role="alert">
+                            <i class="fas fa-check-circle me-2"></i>
+                            Ha cerrado sesión exitosamente.
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        
+                        <!-- Form -->
+                        <div class="card-body p-4 p-md-5">
+                            <h2 class="h4 fw-bold text-center text-dark mb-4">Inicio de Sesión</h2>
+                            
+                            <form th:action="@{/login}" th:method="POST" class="needs-validation" novalidate>
+                                <!-- Usuario -->
+                                <div class="mb-4">
+                                    <label for="username" class="form-label fw-semibold">
+                                        <i class="fas fa-user me-2 text-primary"></i>Nombre de Usuario
+                                    </label>
+                                    <input type="text" 
+                                           class="form-control form-control-lg" 
+                                           id="username" 
+                                           name="username" 
+                                           required
+                                           placeholder="Ingrese su usuario"
+                                           autocomplete="username">
+                                    <div class="invalid-feedback">
+                                        Por favor ingrese su nombre de usuario.
+                                    </div>
+                                </div>
+
+                                <!-- Contraseña -->
+                                <div class="mb-4">
+                                    <label for="password" class="form-label fw-semibold">
+                                        <i class="fas fa-lock me-2 text-primary"></i>Contraseña
+                                    </label>
+                                    <div class="input-group">
+                                        <input type="password" 
+                                               class="form-control form-control-lg" 
+                                               id="password" 
+                                               name="password" 
+                                               required
+                                               placeholder="Ingrese su contraseña"
+                                               autocomplete="current-password">
+                                        <button type="button" class="btn btn-outline-secondary" onclick="togglePassword()">
+                                            <i class="fas fa-eye" id="passwordIcon"></i>
+                                        </button>
+                                    </div>
+                                    <div class="invalid-feedback">
+                                        Por favor ingrese su contraseña.
+                                    </div>
+                                </div>
+
+                                <!-- Recordar usuario -->
+                                <div class="mb-4 form-check">
+                                    <input type="checkbox" class="form-check-input" id="remember" name="remember">
+                                    <label class="form-check-label text-muted" for="remember">
+                                        Recordar mi usuario
+                                    </label>
+                                </div>
+
+                                <!-- Botón de envío -->
+                                <div class="d-grid mb-3">
+                                    <button type="submit" class="btn btn-primary btn-lg py-2 fw-semibold">
+                                        <i class="fas fa-sign-in-alt me-2"></i>Ingresar al Panel
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        
+                        <!-- Footer -->
+                        <div class="card-footer bg-light text-center py-3 rounded-bottom-4">
+                            <small class="text-muted">
+                                <i class="fas fa-info-circle me-1"></i>
+                                Acceso restringido al personal autorizado
+                            </small>
+                            <div class="mt-2">
+                                <a href="/" class="text-decoration-none text-primary small">
+                                    <i class="fas fa-arrow-left me-1"></i>Volver al sitio principal
+                                </a>
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        <label for="password">Clave</label>
-                        <input type="password" id="password" name="password">
-                    </div>
-                    <button type="submit">Ingresar</button>
-                </form>
+                </div>
             </div>
         </div>
+
+        <script src="/js/bootstrap.bundle.min.js"></script>
+        <script>
+            // Validación del formulario
+            (function() {
+                'use strict';
+                window.addEventListener('load', function() {
+                    var forms = document.getElementsByClassName('needs-validation');
+                    var validation = Array.prototype.filter.call(forms, function(form) {
+                        form.addEventListener('submit', function(event) {
+                            if (form.checkValidity() === false) {
+                                event.preventDefault();
+                                event.stopPropagation();
+                            }
+                            form.classList.add('was-validated');
+                        }, false);
+                    });
+                }, false);
+            })();
+
+            // Mostrar/ocultar contraseña
+            function togglePassword() {
+                var passwordInput = document.getElementById('password');
+                var passwordIcon = document.getElementById('passwordIcon');
+                
+                if (passwordInput.type === 'password') {
+                    passwordInput.type = 'text';
+                    passwordIcon.classList.remove('fa-eye');
+                    passwordIcon.classList.add('fa-eye-slash');
+                } else {
+                    passwordInput.type = 'password';
+                    passwordIcon.classList.remove('fa-eye-slash');
+                    passwordIcon.classList.add('fa-eye');
+                }
+            }
+
+            // Auto-dismiss alerts después de 5 segundos
+            document.addEventListener('DOMContentLoaded', function() {
+                var alerts = document.querySelectorAll('.alert');
+                alerts.forEach(function(alert) {
+                    setTimeout(function() {
+                        if (alert && alert.classList.contains('show')) {
+                            var bsAlert = new bootstrap.Alert(alert);
+                            bsAlert.close();
+                        }
+                    }, 5000);
+                });
+            });
+        </script>
     </body>
 </html>
- 

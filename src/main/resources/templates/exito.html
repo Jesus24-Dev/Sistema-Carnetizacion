@@ -1,16 +1,74 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
     <head>
-        <title>Carnetizacion - Exito</title>
+        <title>Carnetización - Éxito</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="/css/bootstrap.min.css" rel="stylesheet">
-        <script src="/js/bootstrap.bundle.min.js"></script>
     </head>
-    <body>
-        <div>
-            <p>La solicitud de su carnet ha sido procesada, en unos dias le llegara la informacion al correo ingresado.</p>
-            <a href="/">Volver</a>
+    <body class="bg-light">
+        <div class="container-fluid vh-100 d-flex align-items-center justify-content-center">
+            <div class="row w-100 justify-content-center">
+                <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                    <div class="card shadow-lg border-0 rounded-3">
+                        <div class="card-body text-center p-5">
+                            <!-- Icono de éxito -->
+                            <div class="mb-4">
+                                <div class="bg-success bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-check-circle-fill text-success" viewBox="0 0 16 16">
+                                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                                    </svg>
+                                </div>
+                            </div>
+                            
+                            <!-- Mensaje de éxito dinámico -->
+                            <div th:if="${success}" class="alert alert-success border-0 bg-success bg-opacity-10 text-success mb-4">
+                                <h4 class="alert-heading fw-bold mb-2">¡Solicitud Procesada!</h4>
+                                <p class="mb-0" th:text="${success}"></p>
+                            </div>
+                            
+                            <!-- Mensaje principal -->
+                            <h2 class="fw-bold text-dark mb-3">Solicitud Completada</h2>
+                            <p class="text-muted mb-4 fs-5">
+                                La solicitud de su carnet ha sido procesada exitosamente. 
+                                En unos días le llegará la información al correo electrónico ingresado.
+                            </p>
+                            
+                            <!-- Información adicional -->
+                            <div class="bg-light rounded-3 p-4 mb-4">
+                                <h5 class="fw-semibold text-dark mb-3">Próximos pasos:</h5>
+                                <ul class="list-unstyled text-start text-muted">
+                                    <li class="mb-2">
+                                        <span class="badge bg-primary me-2">1</span>
+                                        Revisión de datos por administración
+                                    </li>
+                                    <li class="mb-2">
+                                        <span class="badge bg-primary me-2">2</span>
+                                        Aprobación de la solicitud
+                                    </li>
+                                    <li class="mb-2">
+                                        <span class="badge bg-primary me-2">3</span>
+                                        Notificación vía correo electrónico
+                                    </li>
+                                    <li>
+                                        <span class="badge bg-primary me-2">4</span>
+                                        Entrega del carnet físico
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            <!-- Botón de volver -->
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                                <a href="/" class="btn btn-primary btn-lg px-4 py-2 fw-semibold">
+                                    <i class="fas fa-home me-2"></i>Volver al Inicio
+                                </a>
+                            </div>                          
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+        
+        <script src="/js/bootstrap.bundle.min.js"></script>
     </body>
 </html>

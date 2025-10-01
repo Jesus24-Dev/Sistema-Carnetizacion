@@ -1,19 +1,87 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
     <head>
-        <title>Carnetizacion - Consulta cedula</title>
+        <title>Carnetización - Consulta cédula</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="/css/bootstrap.min.css" rel="stylesheet">
-        <script src="/js/bootstrap.bundle.min.js"></script>
     </head>
-    <body>
-        <div>
-            <h2>Ingrese cedula a buscar</h2>
-            <form th:action="@{/carnet/create/requestCI}" th:method="POST">
-                <input type="text" name="ci">
-                <button type="submit">Buscar</button>
-            </form>
+    <body class="bg-light">
+        <div class="container-fluid vh-100 d-flex align-items-center justify-content-center">
+            <div class="row w-100 justify-content-center">
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="card shadow-lg border-0 rounded-3">
+                        <div class="card-header bg-primary text-white text-center py-4">
+                            <h2 class="mb-0 fw-bold">Consulta de Cédula</h2>
+                            <p class="mb-0 mt-2 opacity-75">Sistema de Carnetización</p>
+                        </div>
+                        <div class="card-body p-4">
+                            <!-- Mensaje de alerta cuando la cédula ya existe -->
+                            <div th:if="${param.exists}" class="alert alert-warning alert-dismissible fade show" role="alert">
+                                <i class="fas fa-exclamation-triangle me-2"></i>
+                                La cédula ingresada ya se encuentra registrada en el sistema.
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                            
+                            <p class="text-muted mb-4 text-center">
+                                Ingrese su número de cédula para verificar si puede proceder con el registro.
+                            </p>
+                            
+                            <form th:action="@{/carnet/create/requestCI}" th:method="POST" class="needs-validation" novalidate>
+                                <div class="mb-4">
+                                    <label for="ci" class="form-label fw-semibold">Número de Cédula</label>
+                                    <input type="text" 
+                                           class="form-control form-control-lg" 
+                                           id="ci" 
+                                           name="ci" 
+                                           placeholder="Ej: 12345678"
+                                           required
+                                           pattern="[0-9]+"
+                                           minlength="6"
+                                           maxlength="10">
+                                    <div class="invalid-feedback">
+                                        Por favor ingrese un número de cédula válido (solo números, 6-10 dígitos).
+                                    </div>
+                                </div>
+                                
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-primary btn-lg py-2 fw-semibold">
+                                        <i class="fas fa-search me-2"></i> Verificar Cédula
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="card-footer text-center py-3">
+                            <small class="text-muted">Ingrese solo números, sin puntos ni espacios</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+        
+        <script src="/js/bootstrap.bundle.min.js"></script>
+        <script>
+            // Validación del formulario
+            (function() {
+                'use strict';
+                window.addEventListener('load', function() {
+                    var forms = document.getElementsByClassName('needs-validation');
+                    var validation = Array.prototype.filter.call(forms, function(form) {
+                        form.addEventListener('submit', function(event) {
+                            if (form.checkValidity() === false) {
+                                event.preventDefault();
+                                event.stopPropagation();
+                            }
+                            form.classList.add('was-validated');
+                        }, false);
+                    });
+                }, false);
+            })();
+            
+            // Limitar entrada a solo números
+            document.getElementById('ci').addEventListener('input', function(e) {
+                this.value = this.value.replace(/[^0-9]/g, '');
+            });
+        </script>
     </body>
 </html>
