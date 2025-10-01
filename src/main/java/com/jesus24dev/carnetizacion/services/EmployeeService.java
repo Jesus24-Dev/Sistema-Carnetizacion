@@ -58,7 +58,7 @@ public class EmployeeService {
     }
 
     public boolean existsByEmployeeCi(String ci) {
-        return employeeRepository.existsByCi(ci);
+        return employeeRepository.existsById(ci);
     }
     
 }
