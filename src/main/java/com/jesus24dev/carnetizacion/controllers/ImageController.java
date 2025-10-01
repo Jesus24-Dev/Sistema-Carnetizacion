@@ -1,7 +1,6 @@
 package com.jesus24dev.carnetizacion.controllers;
 
 import com.jesus24dev.carnetizacion.dto.response.ImagesResponse;
-import com.jesus24dev.carnetizacion.models.Employee;
 import com.jesus24dev.carnetizacion.models.Images;
 import com.jesus24dev.carnetizacion.services.EmployeeService;
 import com.jesus24dev.carnetizacion.services.ImageValidationService;
@@ -12,7 +11,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
