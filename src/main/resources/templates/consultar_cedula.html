@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
     <head>
         <title>Carnetizacion - Consulta cedula</title>
         <meta charset="UTF-8">
@@ -10,7 +10,7 @@
     <body>
         <div>
             <h2>Ingrese cedula a buscar</h2>
-            <form>
+            <form th:action="@{/carnet/create/requestCI}" th:method="POST">
                 <input type="text" name="ci">
                 <button type="submit">Buscar</button>
             </form>
