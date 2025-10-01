@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
     <head>
         <title>Carnetizacion - Subir datos</title>
         <meta charset="UTF-8">
@@ -10,10 +10,11 @@
     <body>
         <div>
             <h2>Datos personales</h2>
-            <form>
+            <form th:action="@{/carnet/create/requestData}" th:method="POST">
                 <div>
                     <label for="ci">Cedula</label>
-                    <input type="text" name="ci" id="ci" disabled>
+                    <input type="text" th:value="${ci}" disabled>
+                    <input type="hidden" name="ci" th:value="${ci}">
                 </div>
                 <div>
                     <label for=name>Nombres</label>
