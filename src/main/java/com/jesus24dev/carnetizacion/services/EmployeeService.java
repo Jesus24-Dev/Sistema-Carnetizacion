@@ -61,4 +61,18 @@ public class EmployeeService {
         return employeeRepository.existsById(ci);
     }
     
+    public void approveCarnet(String ci){
+        Employee employeeFounded = this.findEmployeeByCi(ci);
+        employeeFounded.setLicenceStatus("APROBADO");
+        
+        employeeRepository.save(employeeFounded);
+    }
+    
+    public void declineCarnet(String ci){
+        Employee employeeFounded = this.findEmployeeByCi(ci);
+        employeeFounded.setLicenceStatus("RECHAZADO");
+        
+        employeeRepository.save(employeeFounded);
+    }
+    
 }
