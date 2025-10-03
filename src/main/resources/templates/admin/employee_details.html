@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Detalles del Empleado - Carnetización</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    </head>
+    <body class="bg-light">
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+            <div class="container-fluid">
+                <a class="navbar-brand fw-bold" href="#">
+                    <i class="fas fa-id-card me-2"></i>
+                    Sistema de Carnetización
+                </a>
+                
+                <div class="navbar-nav ms-auto">
+                    <a th:href="@{/admin}" class="btn btn-outline-light btn-sm">
+                        <i class="fas fa-arrow-left me-1"></i>Volver al Panel
+                    </a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="container-fluid py-4">
+            <div class="row">
+                <!-- Sidebar de Navegación -->
+                <div class="col-lg-2 col-md-3 mb-4">
+                    <div class="card shadow-sm border-0 rounded-3">
+                        <div class="card-body">
+                            <h6 class="fw-bold text-uppercase text-muted small mb-3">Acciones</h6>
+                            <div class="d-grid gap-2">
+                                <a th:href="@{/admin}" class="btn btn-outline-primary btn-sm text-start">
+                                    <i class="fas fa-arrow-left me-2"></i>Volver
+                                </a>
+                                <button class="btn btn-outline-success btn-sm text-start" data-bs-toggle="modal" data-bs-target="#approveModal">
+                                    <i class="fas fa-check me-2"></i>Aprobar
+                                </button>
+                                <button class="btn btn-outline-danger btn-sm text-start" data-bs-toggle="modal" data-bs-target="#rejectModal">
+                                    <i class="fas fa-times me-2"></i>Rechazar
+                                </button>
+                            </div>
+                            
+                            <hr class="my-3">
+                            
+                            <h6 class="fw-bold text-uppercase text-muted small mb-3">Estado Actual</h6>
+                            <div class="text-center">
+                                <span th:switch="${employee.licenseStatus}" class="badge fs-6 py-2 w-100">
+                                    <span th:case="'PENDIENTE'" class="bg-warning">PENDIENTE</span>
+                                    <span th:case="'APROBADO'" class="bg-success">APROBADO</span>
+                                    <span th:case="'RECHAZADO'" class="bg-danger">RECHAZADO</span>
+                                    <span th:case="*" class="bg-secondary" th:text="${employee.licenseStatus}"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contenido Principal -->
+                <div class="col-lg-10 col-md-9">
+                    <!-- Header -->
+                    <div class="card shadow-sm border-0 rounded-3 mb-4">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-md-8">
+                                    <h2 class="h4 fw-bold text-dark mb-1">
+                                        <i class="fas fa-user me-2 text-primary"></i>
+                                        Detalles del Empleado
+                                    </h2>
+                                    <p class="text-muted mb-0">Revisión y validación de información para carnetización</p>
+                                </div>
+                                <div class="col-md-4 text-md-end">
+                                    <span th:switch="${employee.licenseStatus}" class="badge fs-6 py-2 px-3">
+                                        <span th:case="'PENDIENTE'" class="bg-warning">PENDIENTE DE REVISIÓN</span>
+                                        <span th:case="'APROBADO'" class="bg-success">APROBADO</span>
+                                        <span th:case="'RECHAZADO'" class="bg-danger">RECHAZADO</span>
+                                        <span th:case="*" class="bg-secondary" th:text="${employee.licenseStatus}"></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <!-- Información del Empleado -->
+                        <div class="col-lg-6 mb-4">
+                            <div class="card shadow-sm border-0 rounded-3 h-100">
+                                <div class="card-header bg-white py-3">
+                                    <h5 class="card-title mb-0 fw-bold text-dark">
+                                        <i class="fas fa-id-card me-2 text-primary"></i>
+                                        Información Personal
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row g-3">
+                                        <div class="col-sm-6">
+                                            <label class="form-label fw-semibold text-muted small mb-1">Cédula</label>
+                                            <div class="p-2 bg-light rounded-2">
+                                                <strong th:text="${employee.ci}"></strong>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <label class="form-label fw-semibold text-muted small mb-1">Sexo</label>
+                                            <div class="p-2 bg-light rounded-2">
+                                                <span th:if="${employee.gender.gender == 'MALE'}" class="badge bg-primary">MASCULINO</span>
+                                                <span th:if="${employee.gender.gender == 'FEMALE'}" class="badge bg-pink">FEMENINO</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <label class="form-label fw-semibold text-muted small mb-1">Nombres</label>
+                                            <div class="p-2 bg-light rounded-2">
+                                                <strong th:text="${employee.name}"></strong>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <label class="form-label fw-semibold text-muted small mb-1">Apellidos</label>
+                                            <div class="p-2 bg-light rounded-2">
+                                                <strong th:text="${employee.lastname}"></strong>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <label class="form-label fw-semibold text-muted small mb-1">Correo Electrónico</label>
+                                            <div class="p-2 bg-light rounded-2">
+                                                <strong th:text="${employee.email}"></strong>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <label class="form-label fw-semibold text-muted small mb-1">Fecha de Nacimiento</label>
+                                            <div class="p-2 bg-light rounded-2">
+                                                <small th:text="${#temporals.format(employee.birthday, 'dd/MM/yyyy')}"></small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Imagen del Carnet -->
+                        <div class="col-lg-6 mb-4">
+                            <div class="card shadow-sm border-0 rounded-3 h-100">
+                                <div class="card-header bg-white py-3">
+                                    <h5 class="card-title mb-0 fw-bold text-dark">
+                                        <i class="fas fa-camera me-2 text-primary"></i>
+                                        Fotografía para Carnet
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <!-- Vista de la imagen -->
+                                    <div class="text-center mb-4">
+                                        <div class="border rounded-3 p-3 bg-light mb-3">
+                                            <img th:src="${image.pathFile}" 
+                                                 alt="Fotografía del empleado" 
+                                                 class="img-fluid rounded-2 shadow-sm"
+                                                 style="max-height: 300px;"
+                                                 id="employeeImage">
+                                        </div>
+                                        <div class="d-flex justify-content-center gap-2">
+                                            <button class="btn btn-outline-primary btn-sm" onclick="zoomImage(1.2)">
+                                                <i class="fas fa-search-plus"></i>
+                                            </button>
+                                            <button class="btn btn-outline-secondary btn-sm" onclick="zoomImage(1)">
+                                                <i class="fas fa-search"></i>
+                                            </button>
+                                            <button class="btn btn-outline-primary btn-sm" onclick="zoomImage(0.8)">
+                                                <i class="fas fa-search-minus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <!-- Información de la imagen -->
+                                    <div class="bg-light rounded-3 p-3">
+                                        <h6 class="fw-semibold mb-3">Información de la Imagen</h6>
+                                        <div class="row g-2 small">
+                                            <div class="col-6">
+                                                <span class="text-muted">ID:</span>
+                                            </div>
+                                            <div class="col-6">
+                                                <strong th:text="${image.id}"></strong>
+                                            </div>
+                                            <div class="col-6">
+                                                <span class="text-muted">Subido en:</span>
+                                            </div>
+                                            <div class="col-6">
+                                                <small th:text="${#temporals.format(image.uploadedAt, 'dd/MM/yyyy')}"></small>
+                                            </div>
+                                            <div class="col-6">
+                                                <span class="text-muted">Validado:</span>
+                                            </div>
+                                            <div class="col-6">
+                                                <span th:if="${image.validated}" class="badge bg-success">SÍ</span>
+                                                <span th:unless="${image.validated}" class="badge bg-warning">NO</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Checklist de Validación -->
+                    <div class="card shadow-sm border-0 rounded-3">
+                        <div class="card-header bg-white py-3">
+                            <h5 class="card-title mb-0 fw-bold text-dark">
+                                <i class="fas fa-clipboard-check me-2 text-primary"></i>
+                                Checklist de Validación
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="check1">
+                                        <label class="form-check-label fw-semibold" for="check1">
+                                            Rostro claramente visible y reconocible
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="check2">
+                                        <label class="form-check-label fw-semibold" for="check2">
+                                            Fondo blanco y uniforme
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="check3">
+                                        <label class="form-check-label fw-semibold" for="check3">
+                                            Cabello recogido (si aplica)
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="check4">
+                                        <label class="form-check-label fw-semibold" for="check4">
+                                            Sin vello facial
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="check5">
+                                        <label class="form-check-label fw-semibold" for="check5">
+                                            Sin accesorios (gafas, gorras, etc.)
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="check6">
+                                        <label class="form-check-label fw-semibold" for="check6">
+                                            Expresión neutral y mirada al frente
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de Aprobación -->
+        <div class="modal fade" id="approveModal" tabindex="-1" aria-labelledby="approveModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content border-0 rounded-3 shadow">
+                    <div class="modal-header bg-success text-white">
+                        <h5 class="modal-title fw-bold" id="approveModalLabel">
+                            <i class="fas fa-check-circle me-2"></i>
+                            Aprobar Carnet
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="mb-3">¿Está seguro que desea <strong>APROBAR</strong> el carnet de este empleado?</p>
+                        <div class="alert alert-success small">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Al aprobar, el sistema generará el carnet y notificará al empleado.
+                        </div>
+                        <form th:action="@{/admin/approve}" th:method="POST" id="approveForm">
+                            <input type="hidden" name="ci" th:value="${employee.ci}">
+                            <div class="mb-3">
+                                <label for="approvalNotes" class="form-label small fw-semibold">Comentarios (opcional):</label>
+                                <textarea class="form-control" id="approvalNotes" name="notes" rows="3" placeholder="Agregue comentarios si es necesario..."></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" form="approveForm" class="btn btn-success">
+                            <i class="fas fa-check me-2"></i>Sí, Aprobar Carnet
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de Rechazo -->
+        <div class="modal fade" id="rejectModal" tabindex="-1" aria-labelledby="rejectModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content border-0 rounded-3 shadow">
+                    <div class="modal-header bg-danger text-white">
+                        <h5 class="modal-title fw-bold" id="rejectModalLabel">
+                            <i class="fas fa-times-circle me-2"></i>
+                            Rechazar Carnet
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="mb-3">¿Está seguro que desea <strong>RECHAZAR</strong> el carnet de este empleado?</p>
+                        <div class="alert alert-warning small">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            Debe proporcionar una razón para el rechazo.
+                        </div>
+                        <form th:action="@{/admin/decline}" th:method="POST" id="rejectForm">
+                            <input type="hidden" name="ci" th:value="${employee.ci}">
+                            <div class="mb-3">
+                                <label for="rejectionReason" class="form-label small fw-semibold">Razón del rechazo <span class="text-danger">*</span>:</label>
+                                <select class="form-select" id="rejectionReason" name="reason" required>
+                                    <option value="" selected disabled>Seleccione una razón...</option>
+                                    <option value="FOTO_INCORRECTA">Fotografía no cumple requisitos</option>
+                                    <option value="DATOS_INCORRECTOS">Datos personales incorrectos</option>
+                                    <option value="FOTO_BORROSA">Fotografía borrosa o de baja calidad</option>
+                                    <option value="FONDO_INCORRECTO">Fondo no es blanco</option>
+                                    <option value="OTRO">Otro motivo</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="rejectionNotes" class="form-label small fw-semibold">Comentarios adicionales:</label>
+                                <textarea class="form-control" id="rejectionNotes" name="notes" rows="3" placeholder="Describa en detalle el motivo del rechazo..."></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" form="rejectForm" class="btn btn-danger">
+                            <i class="fas fa-times me-2"></i>Sí, Rechazar Carnet
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="/js/bootstrap.bundle.min.js"></script>
+        <script>
+            // Función para zoom de imagen
+            function zoomImage(scale) {
+                const image = document.getElementById('employeeImage');
+                image.style.transform = `scale(${scale})`;
+                image.style.transition = 'transform 0.3s ease';
+            }
+
+            // Validación del formulario de rechazo
+            document.getElementById('rejectForm').addEventListener('submit', function(e) {
+                const reason = document.getElementById('rejectionReason').value;
+                if (!reason) {
+                    e.preventDefault();
+                    alert('Por favor seleccione una razón para el rechazo.');
+                    document.getElementById('rejectionReason').focus();
+                }
+            });
+
+            // Mostrar/ocultar campos adicionales basados en la selección
+            document.getElementById('rejectionReason').addEventListener('change', function() {
+                const notes = document.getElementById('rejectionNotes');
+                if (this.value === 'OTRO') {
+                    notes.required = true;
+                    notes.placeholder = 'Por favor especifique el motivo del rechazo...';
+                } else {
+                    notes.required = false;
+                    notes.placeholder = 'Describa en detalle el motivo del rechazo...';
+                }
+            });
+
+            // Estilo para badge femenino
+            const style = document.createElement('style');
+            style.textContent = `
+                .bg-pink { 
+                    background-color: #e83e8c !important; 
+                    color: white !important;
+                }
+                .form-check-input:checked {
+                    background-color: #198754;
+                    border-color: #198754;
+                }
+                #employeeImage {
+                    cursor: zoom-in;
+                    transition: transform 0.3s ease;
+                }
+                .modal-header {
+                    border-bottom: none;
+                }
+                .modal-footer {
+                    border-top: none;
+                }
+            `;
+            document.head.appendChild(style);
+
+            // Inicializar tooltips
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+        </script>
+    </body>
+</html>
