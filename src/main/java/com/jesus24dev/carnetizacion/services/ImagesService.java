@@ -1,8 +1,10 @@
 
 package com.jesus24dev.carnetizacion.services;
 
+import com.jesus24dev.carnetizacion.exception.EntityNotFoundException;
 import com.jesus24dev.carnetizacion.models.Employee;
 import com.jesus24dev.carnetizacion.models.Images;
+import com.jesus24dev.carnetizacion.repository.EmployeeRepository;
 import com.jesus24dev.carnetizacion.repository.ImagesRepository;
 import jakarta.transaction.Transactional;
 import java.nio.file.Path;
@@ -17,17 +19,24 @@ import org.springframework.stereotype.Service;
 public class ImagesService {
     
     private ImagesRepository imagesRepository;
-    private EmployeeService employeeService;
+    private EmployeeRepository employeeRepository;
     
     @Autowired
-    public ImagesService(ImagesRepository imagesRepository, EmployeeService employeeService){
+    public ImagesService(ImagesRepository imagesRepository, EmployeeRepository employeeRepository){
         this.imagesRepository = imagesRepository;
-        this.employeeService = employeeService;
+        this.employeeRepository = employeeRepository;
+    }
+    
+    public Images getImageByEmployee(Employee emp){
+        Images image = imagesRepository.findByEmployee(emp)
+                .orElseThrow(() -> new EntityNotFoundException("Imagen", emp.getCi()));
+        
+        return image;
     }
     
     public Images createImage(String filePath, String ci, boolean validated){
         Optional<Images> existingImage = imagesRepository.findByEmployeeCi(ci);
-        Employee employee = employeeService.findEmployeeByCi(ci);
+        Employee employee = employeeRepository.findById(ci).get();
 
         Images image;
         if (existingImage.isPresent()) {
@@ -35,19 +44,21 @@ public class ImagesService {
             image.setPathFile(filePath);
             image.setUploadedAt(LocalDate.now());
             image.setValidated(validated); // Nuevo campo
+            employee.setImage(image);
         } else {
             image = new Images();
             image.setPathFile(filePath);
             image.setEmployee(employee);
             image.setUploadedAt(LocalDate.now());
             image.setValidated(validated); // Nuevo campo
+            employee.setImage(image);
         }
-        
+
         return imagesRepository.save(image);
     }
     
     public String getImagePath(String ci){
-        Employee employeeFounded = employeeService.findEmployeeByCi(ci);  
+        Employee employeeFounded = employeeRepository.findById(ci).get();  
         String pathFile = employeeFounded.getImage().getPathFile();       
         return pathFile;
     }
@@ -57,6 +68,6 @@ public class ImagesService {
     }
      
      public boolean existsByCi(String ci) {
-        return employeeService.existsByEmployeeCi(ci);
+        return employeeRepository.existsByCi(ci);
     }
 }
