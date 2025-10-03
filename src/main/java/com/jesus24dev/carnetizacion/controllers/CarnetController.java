@@ -83,6 +83,7 @@ public class CarnetController {
         employeeToSave.setEmail(request.getEmail());
         employeeToSave.setGender(request.getGender());
         employeeToSave.setBirthday(request.getBirthday());
+        employeeToSave.setLicenceStatus("PENDIENTE");
 
         Employee savedEmployee = employeeService.createEmployee(employeeToSave);
         redirectAttributes.addFlashAttribute("ci", savedEmployee.getCi());

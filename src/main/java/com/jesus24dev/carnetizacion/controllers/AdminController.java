@@ -13,7 +13,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/admin")
@@ -48,5 +50,19 @@ public class AdminController {
         model.addAttribute("image", imgResponse);
         
         return "admin/employee_details";
+    }
+    
+    @PostMapping("/approve")
+    public String approveLicense(@RequestParam("ci") String ci){
+        employeeService.approveCarnet(ci);
+        
+        return "redirect:/admin";
+    }
+    
+    @PostMapping("/decline")
+    public String declineLicense(@RequestParam("ci") String ci){
+        employeeService.declineCarnet(ci);
+        
+        return "redirect:/admin";
     }
 }

@@ -12,6 +12,7 @@ public class EmployeeResponse {
     private final String email;
     private final LocalDate birthday;
     private final Long imageId;
+    private final String licenseStatus;
     
     public EmployeeResponse(Employee employee) {
         this.ci = employee.getCi();
@@ -21,6 +22,7 @@ public class EmployeeResponse {
         this.email = employee.getEmail();
         this.birthday = employee.getBirthday();
         this.imageId = (employee.getImage() != null) ? employee.getImage().getId() : null;
+        this.licenseStatus = employee.getLicenceStatus();
     }
 
     public String getCi() {
@@ -49,6 +51,10 @@ public class EmployeeResponse {
 
     public Long getImageId() {
         return imageId;
+    }
+
+    public String getLicenseStatus() {
+        return licenseStatus;
     }
     
     

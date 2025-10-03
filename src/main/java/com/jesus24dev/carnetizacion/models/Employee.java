@@ -19,6 +19,7 @@ public class Employee {
     private Gender gender;
     private String email;
     private LocalDate birthday;
+    private String licenseStatus;
     
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "imageId", referencedColumnName = "id")
@@ -28,7 +29,7 @@ public class Employee {
     public Employee() {
     }
 
-    public Employee(String ci, String name, String lastname, Gender gender, String email, LocalDate birthday, Images image) {
+    public Employee(String ci, String name, String lastname, Gender gender, String email, LocalDate birthday, Images image, String licenseStatus) {
         this.ci = ci;
         this.name = name;
         this.lastname = lastname;
@@ -36,6 +37,7 @@ public class Employee {
         this.email = email;
         this.birthday = birthday;
         this.image = image;
+        this.licenseStatus = licenseStatus;
     } 
 
     public String getCi() {
@@ -93,6 +95,15 @@ public class Employee {
     public void setImage(Images image) {
         this.image = image;
     }
+
+    public String getLicenceStatus() {
+        return licenseStatus;
+    }
+
+    public void setLicenceStatus(String licenceStatus) {
+        this.licenseStatus = licenceStatus;
+    }
+    
     
     
      
