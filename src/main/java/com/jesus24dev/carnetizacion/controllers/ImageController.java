@@ -25,7 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("/api/images")
 public class ImageController {
-    private final String UPLOAD_DIR = "./images/";
+    private final String UPLOAD_DIR = "src/main/resources/static/images/";
     private final ImagesService imagesService;
     private final ImageValidationService imageValidationService;
     private final EmployeeService employeeService;
@@ -84,7 +84,7 @@ public class ImageController {
 
             Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
             
-            Images image = imagesService.createImage(filePath.toString(), ci, true);
+            Images image = imagesService.createImage(("\\images" + fileName), ci, true);
 
             return ResponseEntity.status(HttpStatus.CREATED).body(new ImagesResponse(image));
             
