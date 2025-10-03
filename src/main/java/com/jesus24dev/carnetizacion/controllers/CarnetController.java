@@ -31,7 +31,7 @@ public class CarnetController {
     private final EmployeeService employeeService;
     private final ImageValidationService imageValidationService;
     private final ImagesService imagesService;
-    private final String UPLOAD_DIR = "./images/";
+    private final String UPLOAD_DIR = "src/main/resources/static/images/";
     
     @Autowired
     public CarnetController(EmployeeService employeeService, ImageValidationService imageValidationService, ImagesService imagesService){
@@ -130,7 +130,7 @@ public class CarnetController {
 
             Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
 
-            Images image = imagesService.createImage(filePath.toString(), ci, true);
+            Images image = imagesService.createImage(("\\images\\" + fileName), ci, true);
 
             redirectAttributes.addFlashAttribute("success", "Imagen subida correctamente");
             redirectAttributes.addFlashAttribute("imagePath", image.getPathFile());
